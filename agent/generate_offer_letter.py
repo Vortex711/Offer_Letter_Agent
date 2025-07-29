@@ -2,6 +2,7 @@ from embeddings.query_vector_store import query_vector_store
 from parsing.parse_csv import load_employee_data
 import os
 import google.generativeai as genai
+import pandas as pd
 
 # Load Gemini
 genai.configure(api_key="AIzaSyAr_ZOxZAufdQv9hgtwNBfxjVlahXHUVas")
@@ -12,14 +13,26 @@ EMPLOYEE_CSV_PATH = "data/Employee_List.csv"
 employee_df = load_employee_data(EMPLOYEE_CSV_PATH)
 
 def get_employee_metadata(name):
-    print("Available columns:", employee_df.columns.tolist())  # optional debug line
-    matches = employee_df[employee_df['Employee Name'].str.lower() == name.lower()]
-    if matches.empty:
+    try:
+        csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "Employee_List.csv")
+        df = pd.read_csv(csv_path)
+        print("✅ Loaded employee CSV. Columns:", df.columns.tolist())
+        matches = df[df['Employee Name'].str.lower().str.strip() == name.lower().strip()]
+
+
+        if not matches.empty:
+            return matches.iloc[0].to_dict()
+        else:
+            print("❌ Employee not found in CSV.")
+            return None
+    except Exception as e:
+        print("🚨 Error loading CSV:", e)
         return None
-    return matches.iloc[0].to_dict()
 
 
 def generate_offer_letter(name):
+    print(f"🔎 Looking for: {name}")
+
     employee = get_employee_metadata(name)
     if not employee:
         print(f"❌ No employee found with name: {name}")
@@ -42,6 +55,7 @@ Relevant Policy & Sample Offer Info:
 Write a professional offer letter addressed to the employee. Include important policies, salary info, and joining date.
 """
 
-    print("\n📨 Generating offer letter...\n")
     response = model.generate_content(prompt)
     print(response.text)
+    return response.text
+
