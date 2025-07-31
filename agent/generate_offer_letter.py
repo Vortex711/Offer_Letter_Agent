@@ -5,7 +5,7 @@ import google.generativeai as genai
 import pandas as pd
 
 # Load Gemini
-genai.configure(api_key="AIzaSyAr_ZOxZAufdQv9hgtwNBfxjVlahXHUVas")
+genai.configure(api_key="AIzaSyC9qjOryQmEhIwUEUbn6tEqVPyEpwBzSYg")
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Load CSV once
