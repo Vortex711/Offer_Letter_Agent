@@ -12,9 +12,9 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 def query_vector_store(query, top_k=5, return_docs=False):
     # Use Chroma Cloud
     chroma_client = chromadb.CloudClient(
-        api_key=os.getenv("YOUR_API_KEY"),
-        tenant=os.getenv("TENANT"),
-        database=os.getenv("DATABASE")
+        api_key=os.getenv("CHROMA_API_KEY"),
+        tenant=os.getenv("CHROMA_TENANT"),
+        database=os.getenv("CHROMA_DATABASE")
     )
 
     collection = chroma_client.get_or_create_collection(name="offer_docs")
