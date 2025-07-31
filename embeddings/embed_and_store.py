@@ -5,8 +5,7 @@ import os
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def embed_and_store(chunks, persist_path="chroma_db"):
-    # Use persistent Chroma DB
-    chroma_client = chromadb.PersistentClient(path=persist_path)
+    chroma_client = chromadb.Client()
 
     collection = chroma_client.get_or_create_collection(name="offer_docs")
 
