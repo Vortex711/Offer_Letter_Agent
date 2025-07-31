@@ -1,16 +1,25 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
 from chromadb.config import Settings
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Load the same model used during indexing
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def query_vector_store(query, top_k=5, return_docs=False):
-    # In-memory DuckDB backend
-    chroma_client = chromadb.Client(Settings(
-        chroma_db_impl="duckdb+memory",
-        persist_directory=None
-    ))
+    # Configure Chroma Cloud client properly using Settings
+    chroma_client = chromadb.Client(
+        Settings(
+            chroma_api_impl="chromadb+rest",
+            api_key=os.getenv("CHROMA_API_KEY"),
+            tenant=os.getenv("CHROMA_TENANT"),
+            database=os.getenv("CHROMA_DATABASE")
+        )
+    )
+
     collection = chroma_client.get_or_create_collection(name="offer_docs")
 
     # Embed the user query

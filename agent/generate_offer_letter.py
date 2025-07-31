@@ -47,13 +47,11 @@ def generate_offer_letter(name):
         print(f"❌ No employee found with name: {name}")
         return
 
-    try:
-        context_chunks = query_vector_store(f"Offer letter for {name}", top_k=5, return_docs=True)
-    except RuntimeError:
-        context_chunks = []
+    # Query documents
+    context_chunks = query_vector_store(f"Offer letter for {name}", top_k=5, return_docs=True)
 
+    # Construct prompt
     context_text = "\n\n".join(context_chunks)
-
     prompt = f"""
 You are an HR agent. Use the following information to generate a formal offer letter.
 
