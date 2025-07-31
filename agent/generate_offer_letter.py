@@ -4,13 +4,22 @@ import os
 import google.generativeai as genai
 import pandas as pd
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Load Gemini
-genai.configure(api_key="AIzaSyC9qjOryQmEhIwUEUbn6tEqVPyEpwBzSYg")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Load CSV once
 EMPLOYEE_CSV_PATH = "data/Employee_List.csv"
 employee_df = load_employee_data(EMPLOYEE_CSV_PATH)
+
+def get_all_employee_names():
+    df = pd.read_csv(EMPLOYEE_CSV_PATH)
+    return df['Employee Name'].dropna().tolist()
+
 
 def get_employee_metadata(name):
     try:
