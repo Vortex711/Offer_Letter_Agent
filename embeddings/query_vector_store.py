@@ -1,12 +1,11 @@
-from sentence_transformers import SentenceTransformer
-import chromadb
-import chromadb
-import os
-from dotenv import load_dotenv
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
+from sentence_transformers import SentenceTransformer
+import os
+from dotenv import load_dotenv
+import chromadb
 
 load_dotenv()
 
