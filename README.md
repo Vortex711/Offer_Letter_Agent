@@ -14,7 +14,7 @@ This is a chat-based app that generates downloadable offer letters using natural
 
 1. **Clone this repo**:
    ```bash
-   git clone https://github.com/your-username/offer-letter-agent.git
+   git clone https://github.com/Vortex711/offer-letter-agent.git
    cd offer-letter-agent
 
 2. **Install dependencies**:
